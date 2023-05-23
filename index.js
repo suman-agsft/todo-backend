@@ -27,4 +27,4 @@ app.delete('/todos/:id', todoController.deleteTodo);
 const PORT = process.env.PORT || 5000;
 db.sync().then(() => {
     app.listen(PORT, console.log(`Connected to ${PORT}`));
-}).catch(err => console.log("Error: " + err));
+}).catch(err => console.log("Error" + err));
