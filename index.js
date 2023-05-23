@@ -1,19 +1,32 @@
-const express = require('express')
+const bodyParser = require('body-parser');
+const express = require('express');
+const cors = require('cors');
+const app = express();
 
-const app = express()
-const PORT = 4000
-
-app.listen(PORT, () => {
-  console.log(`API listening on PORT ${PORT} `)
+//Database Connection
+const db = require('./src/config/database');
+db.authenticate().then(() => {
+    console.log('Connected to Database');
+}).catch(err => {
+    console.log('Error: ' + err);
 })
 
-app.get('/', (req, res) => {
-  res.send('Hey this is my API running 🥳')
-})
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(cors("*"));
 
-app.get('/about', (req, res) => {
-  res.send('This is my about route..... ')
-})
 
-// Export the Express API
-module.exports = app
+const todoController = require('./src/controllers/todoController');
+app.post('/todos', todoController.createTodo);
+app.get('/todos', todoController.getAllTodos);
+app.get('/todos/:id', todoController.getTodoById);
+app.put('/todos/:id', todoController.updateTodo);
+app.delete('/todos/:id', todoController.deleteTodo);
+
+
+const PORT = process.env.PORT || 5000;
+db.sync().then(() => {
+    app.listen(PORT, console.log(`Connected to ${PORT}`));
+}).catch(err => console.log("Error" + err));
+
+module.exports = app;
