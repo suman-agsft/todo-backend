@@ -1,0 +1,20 @@
+1. Create a PostgreSQL database
+
+  if(not installed before){
+    -sudo apt update
+    -sudo apt install postgresql
+  }else{
+    -sudo -u postgres psql
+    -CREATE DATABASE your_database_name;
+    -CREATE USER your_username WITH ENCRYPTED PASSWORD 'your_password';
+    -GRANT ALL PRIVILEGES ON DATABASE your_database_name TO your_username;
+  }
+  exit PostgreSQL shell command
+    -ctrl + d
+
+2. View all the databases in the PostgreSQL database
+    -SELECT datname FROM pg_database;
+3. Change password of PostgreSQL database
+    -ALTER USER <username> WITH PASSWORD 'new_password';
+4. Delete a database
+    -DROP DATABASE your_database_name;
